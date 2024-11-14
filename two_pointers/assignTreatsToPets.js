@@ -23,7 +23,6 @@ function assignTreats(appetiteArr, treatArr) {
       currTreat++;
     }
   }
-  console.log(petsFed);
 
   return petsFed;
 }

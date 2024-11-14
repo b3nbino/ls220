@@ -24,8 +24,6 @@ function countPairs(nums, target) {
     }
   }
 
-  console.log(pairs);
-
   return pairs;
 }
 

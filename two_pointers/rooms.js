@@ -33,165 +33,165 @@
 //              conference room is needed.
 
 //Brute force solution
-// function createRoom(interview) {
-//   return new Array(interview[1] + 1)
-//     .fill("")
-//     .fill("#", interview[0], interview[1]);
-// }
+function createRoom(interview) {
+  return new Array(interview[1] + 1)
+    .fill("")
+    .fill("#", interview[0], interview[1]);
+}
 
-// function hasOverlap(room, interview) {
-//   for (let i = interview[0]; i <= interview[1]; i++) {
-//     if (room[i]) {
-//       return true;
-//     }
-//   }
-//   return false;
-// }
+function hasOverlap(room, interview) {
+  for (let i = interview[0]; i <= interview[1]; i++) {
+    if (room[i]) {
+      return true;
+    }
+  }
+  return false;
+}
 
-// function rooms(schedule) {
-//   let roomsTaken = [];
+function rooms(schedule) {
+  let roomsTaken = [];
 
-//   for (let i = 0; i < schedule.length; i++) {
-//     //Check each interview slot
-//     const interview = schedule[i];
+  for (let i = 0; i < schedule.length; i++) {
+    //Check each interview slot
+    const interview = schedule[i];
 
-//     //If there aren't any rooms taken then take one
-//     if (roomsTaken.length === 0) {
-//       roomsTaken.push(createRoom(interview));
-//     } else {
-//       //Check if all the rooms have overlap with the current one
-//       let allOverlaped = roomsTaken.every((room) =>
-//         hasOverlap(room, interview)
-//       );
+    //If there aren't any rooms taken then take one
+    if (roomsTaken.length === 0) {
+      roomsTaken.push(createRoom(interview));
+    } else {
+      //Check if all the rooms have overlap with the current one
+      let allOverlaped = roomsTaken.every((room) =>
+        hasOverlap(room, interview)
+      );
 
-//       //If so, take a new room
-//       if (allOverlaped) {
-//         roomsTaken.push(createRoom(interview));
-//       } else {
-//         //If not, add the current interview to the first open room
-//         //Find first open room
-//         let openRoom = roomsTaken.find((room) => !hasOverlap(room, interview));
+      //If so, take a new room
+      if (allOverlaped) {
+        roomsTaken.push(createRoom(interview));
+      } else {
+        //If not, add the current interview to the first open room
+        //Find first open room
+        let openRoom = roomsTaken.find((room) => !hasOverlap(room, interview));
 
-//         //Make sure there is space for interview
-//         while (openRoom.length < interview[1]) {
-//           openRoom.push("");
-//         }
+        //Make sure there is space for interview
+        while (openRoom.length < interview[1]) {
+          openRoom.push("");
+        }
 
-//         //Add interview
-//         openRoom.fill("#", interview[0], interview[1]);
-//       }
-//     }
-//   }
+        //Add interview
+        openRoom.fill("#", interview[0], interview[1]);
+      }
+    }
+  }
 
-//   return roomsTaken.length;
-// }
+  return roomsTaken.length;
+}
 
 //[0, 10, 20]
 //[15, 25, 25]
 
 //LS Solution:
-function rooms(intervals) {
-  intervals.sort((a, b) => a[0] - b[0]);
-  const numMeetings = intervals.length;
-  if (numMeetings === 0) return 0;
+// function rooms(intervals) {
+//   intervals.sort((a, b) => a[0] - b[0]);
+//   const numMeetings = intervals.length;
+//   if (numMeetings === 0) return 0;
 
-  let endTimes = [intervals[0][1]];
+//   let endTimes = [intervals[0][1]];
 
-  for (let i = 1; i < numMeetings; i++) {
-    let earliestEnd = Math.min(...endTimes);
-    if (intervals[i][0] >= earliestEnd) {
-      endTimes[endTimes.indexOf(earliestEnd)] = intervals[i][1];
-    } else {
-      endTimes.push(intervals[i][1]);
-    }
-  }
+//   for (let i = 1; i < numMeetings; i++) {
+//     let earliestEnd = Math.min(...endTimes);
+//     if (intervals[i][0] >= earliestEnd) {
+//       endTimes[endTimes.indexOf(earliestEnd)] = intervals[i][1];
+//     } else {
+//       endTimes.push(intervals[i][1]);
+//     }
+//   }
 
-  return endTimes.length;
-}
+//   return endTimes.length;
+// }
 
 // Test Cases:
-// console.log(
-//   rooms([
-//     [20, 25],
-//     [10, 15],
-//     [0, 25],
-//   ]) === 2
-// );
-// console.log(
-//   rooms([
-//     [5, 9],
-//     [1, 3],
-//   ]) === 1
-// );
-// console.log(
-//   rooms([
-//     [1, 2],
-//     [3, 4],
-//     [5, 6],
-//   ]) === 1
-// );
-// console.log(
-//   rooms([
-//     [1, 4],
-//     [2, 5],
-//     [3, 6],
-//   ]) === 3
-// );
-// console.log(
-//   rooms([
-//     [1, 3],
-//     [3, 6],
-//     [6, 8],
-//   ]) === 1
-// );
-// console.log(rooms([[1, 10]]) === 1);
-// console.log(
-//   rooms([
-//     [1, 3],
-//     [2, 4],
-//     [4, 6],
-//   ]) === 2
-// );
-// console.log(
-//   rooms([
-//     [1, 5],
-//     [2, 3],
-//     [4, 6],
-//     [5, 7],
-//   ]) === 2
-// );
-// console.log(
-//   rooms([
-//     [0, 5],
-//     [1, 3],
-//     [2, 6],
-//     [4, 7],
-//     [5, 9],
-//     [8, 10],
-//   ]) === 3
-// );
-// console.log(
-//   rooms([
-//     [1, 2],
-//     [2, 3],
-//     [3, 4],
-//     [4, 5],
-//   ]) === 1
-// );
-// console.log(
-//   rooms([
-//     [1, 20],
-//     [5, 10],
-//     [11, 15],
-//     [16, 18],
-//   ]) === 2
-// );
-// console.log(
-//   rooms([
-//     [1, 4],
-//     [1, 3],
-//     [1, 2],
-//     [1, 5],
-//   ]) === 4
-// );
+console.log(
+  rooms([
+    [20, 25],
+    [10, 15],
+    [0, 25],
+  ]) === 2
+);
+console.log(
+  rooms([
+    [5, 9],
+    [1, 3],
+  ]) === 1
+);
+console.log(
+  rooms([
+    [1, 2],
+    [3, 4],
+    [5, 6],
+  ]) === 1
+);
+console.log(
+  rooms([
+    [1, 4],
+    [2, 5],
+    [3, 6],
+  ]) === 3
+);
+console.log(
+  rooms([
+    [1, 3],
+    [3, 6],
+    [6, 8],
+  ]) === 1
+);
+console.log(rooms([[1, 10]]) === 1);
+console.log(
+  rooms([
+    [1, 3],
+    [2, 4],
+    [4, 6],
+  ]) === 2
+);
+console.log(
+  rooms([
+    [1, 5],
+    [2, 3],
+    [4, 6],
+    [5, 7],
+  ]) === 2
+);
+console.log(
+  rooms([
+    [0, 5],
+    [1, 3],
+    [2, 6],
+    [4, 7],
+    [5, 9],
+    [8, 10],
+  ]) === 3
+);
+console.log(
+  rooms([
+    [1, 2],
+    [2, 3],
+    [3, 4],
+    [4, 5],
+  ]) === 1
+);
+console.log(
+  rooms([
+    [1, 20],
+    [5, 10],
+    [11, 15],
+    [16, 18],
+  ]) === 2
+);
+console.log(
+  rooms([
+    [1, 4],
+    [1, 3],
+    [1, 2],
+    [1, 5],
+  ]) === 4
+);
 // All test cases should log true
