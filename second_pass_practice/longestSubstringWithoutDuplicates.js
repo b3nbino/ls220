@@ -51,4 +51,4 @@ console.log(longestSubstringLength("tmmzuxt") === 5);
 console.log(longestSubstringLength("thisishowwedoit") === 6);
 console.log(longestSubstringLength("longestsubstring") === 8);
 console.log(longestSubstringLength("aabbccddeffghijklmno") === 10);
-// console.log(longestSubstringLength("abcdefghijklmnopqrstuvwxyz") === 26);
+console.log(longestSubstringLength("abcdefghijklmnopqrstuvwxyz") === 26);

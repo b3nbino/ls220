@@ -1,18 +1,37 @@
+/**
+ * 1. Using runner anchor starting from the end of nums
+ *    - Both pointers start at the end where runner is one further back (anchor - 1)
+ *    - The runner moves back until the sum is < the target
+ *      - For each pair greater than the target, add one to a counter
+ *    - The anchor moves back one once the sum is < the target
+ *    - If the first pair after the anchor moves is not a greater sum then stop iterating
+ *    - Add each pair to a map to keep track of duplicates
+ */
+
 function countPairs(nums, target) {
-  let validPairs = new Set();
+  let anchor = nums.length - 1;
+  let runner = anchor - 1;
+  let pairs = new Set();
 
-  for (let i = 0; i + 1 <= nums.length; i++) {
-    let currSum = nums.slice(i, i + 2).reduce((acc, curr) => acc + curr, 0);
-
-    if (currSum > target && !validPairs.has(`${nums[i]}, ${nums[i + 2]}`)) {
-      validPairs.add(`${nums[i]}, ${nums[i + 2]}`);
-      validPairs.add(`${nums[i + 2]}, ${nums[i]}`);
+  while (anchor > 0) {
+    let sum = nums[anchor] + nums[runner];
+    if (sum > target) {
+      if (!pairs.has(`${nums[anchor]}, ${nums[runner]}`)) {
+        pairs.add(`${nums[anchor]}, ${nums[runner]}`);
+        pairs.add(`${nums[runner]}, ${nums[anchor]}`);
+      }
+    } else {
+      anchor--;
+      runner = anchor - 1;
+      if (nums[anchor] + nums[runner] <= target) {
+        break;
+      }
+      continue;
     }
+    runner--;
   }
 
-  console.log(validPairs);
-
-  return validPairs.size / 2;
+  return pairs.size / 2;
 }
 
 console.log(countPairs([1, 2, 3, 4, 5], 6) == 4);
