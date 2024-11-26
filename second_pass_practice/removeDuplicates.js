@@ -1,14 +1,35 @@
-/**
- * 1. Iterate through the linked list using a curr and prev pointer
- *    - If curr.val === prev.val (they have duplicate values)
- *      - prev.next === curr.next (remove the duplicate)
- *    - Else prev = curr (If they have different values then we have removed all duplicates and can move prev)
- *    - curr = curr.next (curr always moves)
- */
+// Write a function `removeDuplicates` that removes all
+// nodes with duplicate values from a sorted linked list,
+// leaving only distinct values from the original list.
+// The function should take the head of the sorted linked
+// list as input and return the modified list. The list
+// should remain sorted after removing duplicates. If the
+// list becomes empty after removing all duplicates,
+// return null.
 
-function ListNode(val) {
-  this.val = val;
-  this.next = null;
+// Example:
+// Input: head = [1, 2, 2, 3, 3, 4, 5, 5]
+// Output: [1, 4]
+// Explanation: The values 2, 3, and 5 appear multiple times, so
+//              they are removed. Only 1 and 4 remain as unique
+//              values.
+
+class ListNode {
+  constructor(val = 0, next = null) {
+    this.val = val;
+    this.next = next;
+  }
+}
+
+function printLinkedList(head) {
+  let currentNode = head;
+  let listStr = "";
+  while (currentNode !== null) {
+    listStr += currentNode.val + " -> ";
+    currentNode = currentNode.next;
+  }
+  listStr += "null";
+  console.log(listStr);
 }
 
 function createLinkedList(arr) {
@@ -21,42 +42,43 @@ function createLinkedList(arr) {
   return head.next;
 }
 
-function printLinkedList(head) {
-  let currentNode = head;
-  let listStr = "";
-  while (currentNode !== null) {
-    listStr += currentNode.val + " -> ";
-    currentNode = currentNode.next;
-  }
-  listStr += "null"; // Indicate the end of the list
-  console.log(listStr);
-}
-
-function deleteDuplicates(head) {
-  let curr = head.next;
-  let prev = head;
+/**
+ * 1. Use two pointers, prev and curr to iterate through the list
+ *    - If curr ever equals curr.next then move curr until it doesn't
+ *      - Set prev.next to curr.next
+ */
+function removeDuplicates(head) {
+  let curr = head;
+  let prev = new ListNode(null, curr);
 
   while (curr) {
-    if (prev.val === curr.val) {
+    if (curr.next && curr.val === curr.next.val) {
+      while (curr.next && curr.val === curr.next.val) {
+        curr = curr.next;
+      }
+      if (prev.next === head) {
+        head = curr.next;
+      }
       prev.next = curr.next;
+      curr = curr.next;
+      continue;
     } else {
       prev = curr;
+      curr = curr.next;
     }
-
-    curr = curr.next;
   }
 
   return head;
 }
 
-let list1 = createLinkedList([1, 1, 2]);
-let list2 = createLinkedList([1, 1, 2, 3, 3]);
-let list3 = createLinkedList([1, 2, 3, 3, 4]);
-let list4 = createLinkedList([2, 2, 2, 3, 3]);
-let list5 = createLinkedList([5]);
+let list1 = createLinkedList([1, 2, 2, 3, 3, 4, 5, 5]);
+let list2 = createLinkedList([1, 1, 1, 2, 3]);
+let list3 = createLinkedList([1, 2, 3, 4, 5]);
+let list4 = createLinkedList([1, 1, 1, 1, 1]);
+let list5 = createLinkedList([1, 2, 2, 3, 3, 3, 4, 4, 5, 5, 5]);
 
-printLinkedList(deleteDuplicates(list1)); // Expected: "1 -> 2 -> null"
-printLinkedList(deleteDuplicates(list2)); // Expected: "1 -> 2 -> 3 -> null"
-printLinkedList(deleteDuplicates(list3)); // Expected: "1 -> 2 -> 3 -> 4 -> null"
-printLinkedList(deleteDuplicates(list4)); // Expected: "2 -> 3 -> null"
-printLinkedList(deleteDuplicates(list5)); // Expected: "5 -> null"
+printLinkedList(removeDuplicates(list1)); // Expected: 1 -> 4 -> null
+printLinkedList(removeDuplicates(list2)); // Expected: 2 -> 3 -> null
+printLinkedList(removeDuplicates(list3)); // Expected: 1 -> 2 -> 3 -> 4 -> 5 -> null
+printLinkedList(removeDuplicates(list4)); // Expected: null
+printLinkedList(removeDuplicates(list5)); // Expected: 1 -> null

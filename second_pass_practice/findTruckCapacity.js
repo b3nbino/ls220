@@ -62,8 +62,6 @@ function findTruckCapacity(orderVolumes, maxTrips) {
     }
   }
 
-  console.log(minimumCapacity);
-
   return minimumCapacity;
 }
 
