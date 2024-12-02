@@ -1,7 +1,29 @@
 // Given the root node of a binary tree, implement a
-// function `bfs` that returns an array containing the
-// values of the nodes visited in level order
-// (or breadth-first-search) traversal.
+// function `preorderTraversal`, that returns an
+// array containing the values of the nodes visited in
+// a preorder traversal.
+
+// Your task is to implement the function iteratively using a stack.
+
+function preorderTraversal(root) {
+  let nodes = [];
+  let stack = [root];
+
+  while (stack.length > 0) {
+    let currNode = stack.pop();
+
+    nodes.push(currNode.val);
+
+    if (currNode.right !== null) {
+      stack.push(currNode.right);
+    }
+    if (currNode.left !== null) {
+      stack.push(currNode.left);
+    }
+  }
+
+  return nodes;
+}
 
 class Node {
   constructor(value) {
@@ -44,35 +66,21 @@ function buildTree(arr) {
   return root;
 }
 
-function bfs(root) {
-  let queue = [root];
-  let nodes = [];
+// Test Cases:
 
-  while (queue.length > 0) {
-    let curr = queue.shift();
-
-    nodes.push(curr.val);
-
-    if (curr.left) {
-      queue.push(curr.left);
-    }
-    if (curr.right) {
-      queue.push(curr.right);
-    }
-  }
-
-  return nodes;
-}
-
-// Test cases
 const tree1 = buildTree([1, null, 2, 3]);
-console.log(bfs(tree1)); // Output: [1, 2, 3]
+console.log(preorderTraversal(tree1)); // Output: [1, 2, 3]
 
 const tree2 = buildTree([1, 2, 3, null, null, 4, null, null, 5]);
-console.log(bfs(tree2)); // Output: [1, 2, 3, 4, 5]
+console.log(preorderTraversal(tree2)); // Output: [1, 2, 3, 4, 5]
 
 const tree3 = buildTree([5, 3, null, 2, null, 1, null]);
-console.log(bfs(tree3)); // Output: [5, 3, 2, 1]
+console.log(preorderTraversal(tree3)); // Output: [5, 3, 2, 1]
 
 const tree4 = buildTree([10, 5, 15, null, 6, 12, 21, null, null, 11]);
-console.log(bfs(tree4)); // Output: [10, 5, 15, 6, 12, 21, 11]
+console.log(preorderTraversal(tree4)); // Output: [10, 5, 6, 15, 12, 11, 21]
+
+//         10
+//       5    15
+//   null 6 12  21
+// null 11
