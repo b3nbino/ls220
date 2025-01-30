@@ -5,6 +5,14 @@
  * Problem:
  * - Given an array that represents an elevation map
  * - Return the greatest area of water between two bars that can be trapped after a rainfall
+ * 
+ * Algorithm:
+ * 1. Using start and end pointers
+ *    - Find the distance between two posts
+ *    - Multiply the distance with the height of the smaller pole to find the area
+ *    - Assign the greatest area value to a variable
+ *    - Increment the smaller of the two poles
+ * 2. Return the greatest area found
  */
 
 function maxArea(height) {
@@ -17,7 +25,7 @@ function maxArea(height) {
     let area = Math.min(height[start], height[end]) * distance;
     max = Math.max(area, max);
 
-    if (height[start + 1] > height[end - 1]) {
+    if (height[start] < height[end]) {
       start++;
     } else {
       end--;
